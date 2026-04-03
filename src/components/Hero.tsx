@@ -188,8 +188,9 @@ export default function Hero() {
           </div>
         </div>
 
-        {/* Marquee ticker */}
-        <div className="mt-8 sm:mt-10 relative overflow-hidden py-3">
+        {/* Marquee ticker — full width */}
+      </div>
+      <div className="relative overflow-hidden py-3 mt-8 sm:mt-10">
           <div className="absolute left-0 top-0 bottom-0 w-16 sm:w-24 z-10 bg-gradient-to-r from-[var(--background)] to-transparent" />
           <div className="absolute right-0 top-0 bottom-0 w-16 sm:w-24 z-10 bg-gradient-to-l from-[var(--background)] to-transparent" />
           <div className="flex animate-marquee whitespace-nowrap">
@@ -214,7 +215,6 @@ export default function Hero() {
             ))}
           </div>
         </div>
-      </div>
     </section>
   );
 }

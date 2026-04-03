@@ -200,10 +200,7 @@ export default function ProblemSolution() {
       <div className="relative mx-auto max-w-6xl px-5 sm:px-8">
         {/* Header */}
         <div className={`text-center max-w-xl mx-auto mb-10 transition-all duration-700 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
-          <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[var(--accent-light)] border border-[var(--accent)]/20 mb-4">
-            <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] animate-pulse" />
-            <span className="text-sm font-medium text-[var(--accent-dark)]">Знайоме?</span>
-          </div>
+         
           <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--foreground)]">
             Як виглядає ваш запис <span className="number-highlight">зараз</span>
           </h2>

@@ -2,192 +2,149 @@
 
 import { useEffect, useRef, useState } from "react";
 
-function AnimatedNumber({
-  target,
-  suffix = "",
-  prefix = "",
-}: {
-  target: number;
-  suffix?: string;
-  prefix?: string;
-}) {
-  const [count, setCount] = useState(0);
-  const ref = useRef<HTMLSpanElement>(null);
-  const hasAnimated = useRef(false);
-
+function useInView(threshold = 0.2) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [inView, setInView] = useState(false);
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting && !hasAnimated.current) {
-          hasAnimated.current = true;
-          const duration = 2000;
-          const steps = 60;
-          const increment = target / steps;
-          let current = 0;
-          const timer = setInterval(() => {
-            current += increment;
-            if (current >= target) {
-              current = target;
-              clearInterval(timer);
-            }
-            setCount(Math.floor(current));
-          }, duration / steps);
-        }
-      },
-      { threshold: 0.3 }
+    const obs = new IntersectionObserver(
+      ([e]) => { if (e.isIntersecting) setInView(true); },
+      { threshold }
     );
-
-    if (ref.current) observer.observe(ref.current);
-    return () => observer.disconnect();
-  }, [target]);
-
-  return (
-    <span ref={ref} className="number-highlight">
-      {prefix}
-      {count}
-      {suffix}
-    </span>
-  );
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, [threshold]);
+  return { ref, inView };
 }
 
+function AnimatedNumber({ target, suffix = "" }: { target: number; suffix?: string }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef<HTMLSpanElement>(null);
+  const done = useRef(false);
+  useEffect(() => {
+    const obs = new IntersectionObserver(([e]) => {
+      if (e.isIntersecting && !done.current) {
+        done.current = true;
+        const dur = 1800, steps = 50, inc = target / steps;
+        let cur = 0;
+        const t = setInterval(() => {
+          cur += inc;
+          if (cur >= target) { cur = target; clearInterval(t); }
+          setCount(Math.floor(cur));
+        }, dur / steps);
+      }
+    }, { threshold: 0.3 });
+    if (ref.current) obs.observe(ref.current);
+    return () => obs.disconnect();
+  }, [target]);
+  return <span ref={ref}>{count}{suffix}</span>;
+}
+
+const cities = [
+  "Київ", "Львів", "Одеса", "Харків", "Дніпро", "Вінниця", "Запоріжжя",
+  "Полтава", "Чернівці", "Ужгород", "Рівне", "Тернопіль", "Івано-Франківськ",
+];
+
 export default function SocialProof() {
-  const stats = [
-    {
-      value: 500,
-      suffix: "+",
-      label: "Майстрів та салонів",
-      icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <path
-            d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-          <path
-            d="M15.5 9.5C15.5 11.433 13.933 13 12 13C10.067 13 8.5 11.433 8.5 9.5C8.5 7.567 10.067 6 12 6C13.933 6 15.5 7.567 15.5 9.5Z"
-            stroke="currentColor"
-            strokeWidth="1.5"
-          />
-          <path
-            d="M6 20C6 17.7909 8.68629 16 12 16C15.3137 16 18 17.7909 18 20"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-          />
-        </svg>
-      ),
-    },
-    {
-      value: 50,
-      suffix: "K+",
-      label: "Записів щомісяця",
-      icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <path
-            d="M8 2V5M16 2V5M3.5 9.09H20.5M21 8.5V17C21 20 19.5 22 16 22H8C4.5 22 3 20 3 17V8.5C3 5.5 4.5 3.5 8 3.5H16C19.5 3.5 21 5.5 21 8.5Z"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      ),
-    },
-    {
-      value: 89,
-      suffix: "%",
-      label: "Менше неявок",
-      icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <path
-            d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z"
-            stroke="currentColor"
-            strokeWidth="1.5"
-          />
-          <path
-            d="M7.75 12L10.58 14.83L16.25 9.17"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      ),
-    },
-    {
-      value: 4,
-      suffix: ".9",
-      label: "Середня оцінка",
-      icon: (
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
-          <path
-            d="M13.73 3.51L15.49 7.03C15.73 7.52 16.37 7.99 16.91 8.08L20.1 8.61C22.14 8.95 22.62 10.43 21.15 11.89L18.67 14.37C18.25 14.79 18.02 15.6 18.15 16.18L18.86 19.25C19.42 21.68 18.13 22.62 15.98 21.35L12.99 19.58C12.45 19.26 11.56 19.26 11.01 19.58L8.02 21.35C5.88 22.62 4.58 21.67 5.14 19.25L5.85 16.18C5.98 15.6 5.75 14.79 5.33 14.37L2.85 11.89C1.39 10.43 1.86 8.95 3.9 8.61L7.09 8.08C7.62 7.99 8.26 7.52 8.5 7.03L10.26 3.51C11.22 1.6 12.78 1.6 13.73 3.51Z"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      ),
-    },
-  ];
+  const { ref, inView } = useInView(0.15);
 
   return (
-    <section className="relative py-10 sm:py-14">
-      <div className="social-proof-line w-full" />
-
-      <div className="mx-auto max-w-7xl px-5 sm:px-8 py-10 sm:py-14">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-4">
-          {stats.map((stat, index) => (
-            <div
-              key={index}
-              className="text-center group"
-            >
-              <div className="inline-flex items-center justify-center w-11 h-11 rounded-2xl bg-[var(--accent-light)] text-[var(--accent-dark)] mb-3 transition-transform duration-300 group-hover:scale-110">
-                {stat.icon}
-              </div>
-              <div className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-1">
-                <AnimatedNumber
-                  target={stat.value}
-                  suffix={stat.suffix}
-                />
-              </div>
-              <p className="text-sm sm:text-[15px] text-[var(--gray-500)] font-medium">
-                {stat.label}
+    <section className="relative py-14 sm:py-20 overflow-hidden">
+      <div ref={ref} className="mx-auto max-w-6xl px-5 sm:px-8">
+        {/* Bento grid */}
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
+          {/* Card 1 — accent highlight */}
+          <div
+            className={`relative group rounded-3xl bg-[var(--accent)] p-6 sm:p-7 overflow-hidden transition-all duration-700 ${
+              inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
+          >
+            <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -translate-y-1/2 translate-x-1/2" />
+            <div className="relative">
+              <p className="text-4xl sm:text-5xl font-extrabold text-[var(--foreground)] tracking-tighter leading-none mb-1">
+                <AnimatedNumber target={500} suffix="+" />
+              </p>
+              <p className="text-sm font-medium text-[var(--foreground)]/70">
+                Майстрів та салонів
               </p>
             </div>
-          ))}
-        </div>
+          </div>
 
-        {/* Trust logos / badges */}
-        <div className="mt-12 pt-10 border-t border-[var(--gray-100)]">
-          <p className="text-center text-xs uppercase tracking-[0.2em] text-[var(--gray-400)] font-medium mb-6">
-            Нам довіряють майстри з усієї України
-          </p>
-          <div className="flex flex-wrap items-center justify-center gap-x-10 gap-y-4">
-            {[
-              "Київ",
-              "Львів",
-              "Одеса",
-              "Харків",
-              "Дніпро",
-              "Вінниця",
-              "Запоріжжя",
-            ].map((city) => (
-              <span
-                key={city}
-                className="text-[var(--gray-300)] text-base sm:text-lg font-semibold tracking-wide transition-colors duration-300 hover:text-[var(--gray-500)]"
-              >
-                {city}
-              </span>
-            ))}
+          {/* Card 2 */}
+          <div
+            className={`relative group rounded-3xl bg-white border border-[var(--gray-100)] p-6 sm:p-7 overflow-hidden transition-all duration-700 delay-75 hover:border-[var(--accent)]/30 hover:shadow-lg hover:shadow-[var(--accent)]/5 ${
+              inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
+          >
+            <div className="absolute bottom-0 right-0 w-20 h-20 bg-[var(--accent-light)] rounded-full translate-y-1/3 translate-x-1/3 opacity-60 group-hover:opacity-100 transition-opacity" />
+            <div className="relative">
+              <p className="text-4xl sm:text-5xl font-extrabold text-[var(--foreground)] tracking-tighter leading-none mb-1">
+                <AnimatedNumber target={50} suffix="K+" />
+              </p>
+              <p className="text-sm font-medium text-[var(--gray-500)]">
+                Записів щомісяця
+              </p>
+            </div>
+          </div>
+
+          {/* Card 3 */}
+          <div
+            className={`relative group rounded-3xl bg-white border border-[var(--gray-100)] p-6 sm:p-7 overflow-hidden transition-all duration-700 delay-150 hover:border-[var(--accent)]/30 hover:shadow-lg hover:shadow-[var(--accent)]/5 ${
+              inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
+          >
+            <div className="absolute top-0 left-0 w-24 h-24 bg-emerald-50 rounded-full -translate-y-1/2 -translate-x-1/2 opacity-60 group-hover:opacity-100 transition-opacity" />
+            <div className="relative">
+              <p className="text-4xl sm:text-5xl font-extrabold text-[var(--foreground)] tracking-tighter leading-none mb-1">
+                <AnimatedNumber target={89} suffix="%" />
+              </p>
+              <p className="text-sm font-medium text-[var(--gray-500)]">
+                Менше неявок
+              </p>
+            </div>
+          </div>
+
+          {/* Card 4 — dark accent */}
+          <div
+            className={`relative group rounded-3xl bg-[var(--foreground)] p-6 sm:p-7 overflow-hidden transition-all duration-700 delay-200 ${
+              inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
+          >
+            <div className="absolute bottom-0 left-0 w-28 h-28 bg-[var(--accent)]/15 rounded-full translate-y-1/3 -translate-x-1/3" />
+            <div className="relative">
+              <div className="flex items-center gap-1 mb-1">
+                <p className="text-4xl sm:text-5xl font-extrabold text-white tracking-tighter leading-none">
+                  <AnimatedNumber target={4} suffix=".9" />
+                </p>
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="var(--accent)" className="mt-1">
+                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                </svg>
+              </div>
+              <p className="text-sm font-medium text-white/60">
+                Середня оцінка
+              </p>
+            </div>
           </div>
         </div>
-      </div>
 
-      <div className="social-proof-line w-full" />
+        {/* Cities — inline */}
+        <div
+          className={`mt-6 flex flex-wrap items-center justify-center gap-x-2 gap-y-2 transition-all duration-700 delay-300 ${
+            inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
+          }`}
+        >
+          <span className="text-xs uppercase tracking-[0.15em] text-[var(--gray-400)] font-medium mr-2">
+            Довіряють у
+          </span>
+          {cities.map((city, i) => (
+            <span
+              key={i}
+              className="px-3 py-1 rounded-full bg-[var(--gray-50)] border border-[var(--gray-100)] text-xs font-medium text-[var(--gray-500)]"
+            >
+              {city}
+            </span>
+          ))}
+        </div>
+      </div>
     </section>
   );
 }
