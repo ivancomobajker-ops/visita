@@ -39,6 +39,15 @@ html {
   scroll-behavior: smooth;
 }
 
+/* Shake animation for chaos notifications */
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  20% { transform: translateX(-3px) rotate(-0.5deg); }
+  40% { transform: translateX(3px) rotate(0.5deg); }
+  60% { transform: translateX(-2px) rotate(-0.3deg); }
+  80% { transform: translateX(2px) rotate(0.3deg); }
+}
+
 /* Animated gradient blob */
 @keyframes blob-float {
   0%, 100% { transform: translate(0, 0) scale(1); }
