@@ -62,16 +62,6 @@ export default function Hero() {
                   <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
               </a>
-              <a
-                href="#demo"
-                className="btn-secondary inline-flex items-center justify-center gap-2.5 h-13 px-7 text-base font-semibold text-[var(--gray-700)] rounded-full border border-[var(--gray-200)] bg-white/60 backdrop-blur-sm"
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
-                  <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="currentColor" strokeWidth="1.5" />
-                  <path d="M10 8.5L16 12L10 15.5V8.5Z" fill="currentColor" />
-                </svg>
-                Дивитись демо
-              </a>
             </div>
 
             {/* Trust line */}
