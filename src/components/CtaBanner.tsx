@@ -79,43 +79,9 @@ export default function CtaBanner() {
                   </a>
                 </div>
 
-                <div className="mt-6 flex items-center gap-4 text-sm text-white/40">
-                  <span className="flex items-center gap-1.5">
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                    >
-                      <path
-                        d="M7.75 12L10.58 14.83L16.25 9.17"
-                        stroke="var(--accent)"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                    14 днів безкоштовно
-                  </span>
-                  <span className="w-1 h-1 rounded-full bg-white/20" />
-                  <span className="flex items-center gap-1.5">
-                    <svg
-                      width="14"
-                      height="14"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                    >
-                      <path
-                        d="M7.75 12L10.58 14.83L16.25 9.17"
-                        stroke="var(--accent)"
-                        strokeWidth="2"
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                      />
-                    </svg>
-                    Без картки
-                  </span>
-                </div>
+                <p className="mt-6 text-sm text-white/40">
+                  14 днів безкоштовно · без картки
+                </p>
               </div>
 
               {/* Right: photo composition */}

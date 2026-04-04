@@ -65,28 +65,9 @@ export default function Hero() {
             </div>
 
             {/* Trust line */}
-            <div className="animate-fade-in-up-delay-3 mt-5 flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-[var(--gray-500)]">
-              <span className="flex items-center gap-1.5">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                  <path d="M7.75 12L10.58 14.83L16.25 9.17" stroke="var(--accent-dark)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                14 днів безкоштовно
-              </span>
-              <span className="w-1 h-1 rounded-full bg-[var(--gray-300)]" />
-              <span className="flex items-center gap-1.5">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                  <path d="M7.75 12L10.58 14.83L16.25 9.17" stroke="var(--accent-dark)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                Без картки
-              </span>
-              <span className="w-1 h-1 rounded-full bg-[var(--gray-300)]" />
-              <span className="flex items-center gap-1.5">
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                  <path d="M7.75 12L10.58 14.83L16.25 9.17" stroke="var(--accent-dark)" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                Старт за 5 хвилин
-              </span>
-            </div>
+            <p className="animate-fade-in-up-delay-3 mt-5 text-sm text-[var(--gray-500)]">
+              14 днів безкоштовно · без картки · старт за 5 хвилин
+            </p>
           </div>
 
           {/* Right: bento visual composition */}
