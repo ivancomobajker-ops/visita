@@ -1,3 +1,5 @@
+import CtaButton from "./CtaButton";
+
 export default function Footer() {
   return (
     <footer className="relative bg-[var(--foreground)] overflow-hidden">
@@ -15,15 +17,14 @@ export default function Footer() {
               <span className="text-[var(--accent)]">свій запис?</span>
             </h3>
           </div>
-          <a
-            href="#"
-            className="inline-flex items-center gap-2.5 px-7 py-3 bg-[var(--accent)] hover:bg-[var(--accent-dark)] text-[var(--foreground)] font-bold text-sm rounded-full transition-all duration-200 shadow-lg shadow-[var(--accent)]/20 hover:shadow-xl hover:shadow-[var(--accent)]/30 hover:-translate-y-0.5 active:translate-y-0 shrink-0"
+          <CtaButton
+            className="inline-flex items-center gap-2.5 px-7 py-3 bg-[var(--accent)] hover:bg-[var(--accent-dark)] text-[var(--foreground)] font-bold text-sm rounded-full transition-all duration-200 shadow-lg shadow-[var(--accent)]/20 hover:shadow-xl hover:shadow-[var(--accent)]/30 hover:-translate-y-0.5 active:translate-y-0 shrink-0 cursor-pointer"
           >
             Спробувати безкоштовно
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none">
               <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
             </svg>
-          </a>
+          </CtaButton>
         </div>
 
         {/* Content row */}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useLeadForm } from "./LeadFormContext";
 
 function useInView(threshold = 0.2) {
   const ref = useRef<HTMLDivElement>(null);
@@ -229,6 +230,7 @@ const steps = [
 
 export default function HowItWorks() {
   const { ref, inView } = useInView(0.1);
+  const { open: openLeadForm } = useLeadForm();
 
   return (
     <section
@@ -367,9 +369,9 @@ export default function HowItWorks() {
             inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
           }`}
         >
-          <a
-            href="#"
-            className="btn-primary inline-flex items-center gap-2.5 h-13 px-8 text-base font-semibold text-[var(--foreground)] rounded-full"
+          <button
+            onClick={openLeadForm}
+            className="btn-primary inline-flex items-center gap-2.5 h-13 px-8 text-base font-semibold text-[var(--foreground)] rounded-full cursor-pointer"
           >
             Почати безкоштовно
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
@@ -381,7 +383,7 @@ export default function HowItWorks() {
                 strokeLinejoin="round"
               />
             </svg>
-          </a>
+          </button>
           <p className="mt-3 text-sm text-[var(--gray-400)]">
             14 днів безкоштовно · без картки · скасувати будь-коли
           </p>

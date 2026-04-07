@@ -1,4 +1,5 @@
 import Image from "next/image";
+import CtaButton from "./CtaButton";
 
 export default function Hero() {
   return (
@@ -53,15 +54,12 @@ export default function Hero() {
 
             {/* CTA Buttons */}
             <div className="animate-fade-in-up-delay-3 mt-7 flex flex-col sm:flex-row gap-3">
-              <a
-                href="#"
-                className="btn-primary inline-flex items-center justify-center gap-2.5 h-13 px-7 text-base font-semibold text-[var(--foreground)] rounded-full"
-              >
+              <CtaButton className="btn-primary inline-flex items-center justify-center gap-2.5 h-13 px-7 text-base font-semibold text-[var(--foreground)] rounded-full cursor-pointer">
                 Спробувати безкоштовно
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
                   <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
-              </a>
+              </CtaButton>
             </div>
 
             {/* Trust line */}

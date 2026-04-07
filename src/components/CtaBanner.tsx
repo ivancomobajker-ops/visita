@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
+import { useLeadForm } from "./LeadFormContext";
 
 function useInView(threshold = 0.15) {
   const ref = useRef<HTMLDivElement>(null);
@@ -23,6 +24,7 @@ function useInView(threshold = 0.15) {
 
 export default function CtaBanner() {
   const { ref, inView } = useInView();
+  const { open: openLeadForm } = useLeadForm();
 
   return (
     <section className="relative py-20 sm:py-28 overflow-hidden">
@@ -57,9 +59,9 @@ export default function CtaBanner() {
                 </p>
 
                 <div className="mt-8 flex flex-col sm:flex-row gap-3">
-                  <a
-                    href="#"
-                    className="inline-flex items-center justify-center gap-2.5 h-13 px-7 text-base font-semibold text-[var(--foreground)] bg-[var(--accent)] hover:bg-[var(--accent-dark)] rounded-full transition-all duration-200 shadow-lg shadow-[var(--accent)]/20"
+                  <button
+                    onClick={openLeadForm}
+                    className="inline-flex items-center justify-center gap-2.5 h-13 px-7 text-base font-semibold text-[var(--foreground)] bg-[var(--accent)] hover:bg-[var(--accent-dark)] rounded-full transition-all duration-200 shadow-lg shadow-[var(--accent)]/20 cursor-pointer"
                   >
                     Почати безкоштовно
                     <svg
@@ -76,7 +78,7 @@ export default function CtaBanner() {
                         strokeLinejoin="round"
                       />
                     </svg>
-                  </a>
+                  </button>
                 </div>
 
                 <p className="mt-6 text-sm text-white/40">

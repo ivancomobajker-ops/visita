@@ -1,8 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useLeadForm } from "./LeadFormContext";
 
 export default function Header() {
+  const { open: openLeadForm } = useLeadForm();
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
@@ -81,15 +83,15 @@ export default function Header() {
 
           {/* Desktop CTA */}
           <div className="hidden md:flex items-center shrink-0">
-            <a
-              href="#"
-              className="btn-primary inline-flex items-center gap-2 px-5 py-2 text-sm font-semibold text-[var(--foreground)] rounded-full"
+            <button
+              onClick={openLeadForm}
+              className="btn-primary inline-flex items-center gap-2 px-5 py-2 text-sm font-semibold text-[var(--foreground)] rounded-full cursor-pointer"
             >
               Спробувати безкоштовно
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
                 <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
-            </a>
+            </button>
           </div>
 
           {/* Mobile menu button */}
@@ -143,12 +145,12 @@ export default function Header() {
             ))}
           </nav>
           <div className="mt-4">
-            <a
-              href="#"
-              className="btn-primary block text-center px-5 py-2.5 text-[15px] font-semibold text-[var(--foreground)] rounded-full"
+            <button
+              onClick={() => { setMobileMenuOpen(false); openLeadForm(); }}
+              className="btn-primary block w-full text-center px-5 py-2.5 text-[15px] font-semibold text-[var(--foreground)] rounded-full cursor-pointer"
             >
               Спробувати безкоштовно
-            </a>
+            </button>
           </div>
         </div>
       </div>

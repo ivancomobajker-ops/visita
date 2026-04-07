@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useLeadForm } from "./LeadFormContext";
 
 function useInView(threshold = 0.15) {
   const ref = useRef<HTMLDivElement>(null);
@@ -42,6 +43,7 @@ const competitorRows = [
 
 export default function Pricing() {
   const { ref, inView } = useInView(0.1);
+  const { open: openLeadForm } = useLeadForm();
   const [priceAnimated, setPriceAnimated] = useState(false);
 
   useEffect(() => {
@@ -169,7 +171,7 @@ export default function Pricing() {
               </p>
 
               {/* CTA */}
-              <button className="w-full h-13 rounded-2xl bg-[var(--accent)] hover:bg-[var(--accent-dark)] text-[var(--foreground)] font-bold text-base tracking-wide transition-all duration-200 shadow-lg shadow-[var(--accent)]/20 hover:shadow-xl hover:shadow-[var(--accent)]/30 hover:-translate-y-0.5 active:translate-y-0 cursor-pointer mb-6">
+              <button onClick={openLeadForm} className="w-full h-13 rounded-2xl bg-[var(--accent)] hover:bg-[var(--accent-dark)] text-[var(--foreground)] font-bold text-base tracking-wide transition-all duration-200 shadow-lg shadow-[var(--accent)]/20 hover:shadow-xl hover:shadow-[var(--accent)]/30 hover:-translate-y-0.5 active:translate-y-0 cursor-pointer mb-6">
                 Спробувати безкоштовно
               </button>
 
