@@ -32,9 +32,9 @@ export default function Hero() {
 
             {/* Headline */}
             <h1 className="animate-fade-in-up-delay-1 text-4xl sm:text-5xl lg:text-[56px] font-extrabold leading-[1.08] tracking-tight text-[var(--foreground)]">
-              Клієнти бронюють{" "}
+              Онлайн-запис,{" "}
               <span className="relative inline-block">
-                <span className="relative z-10">самі, 24/7</span>
+                <span className="relative z-10">який працює</span>
                 <span
                   className="absolute bottom-0.5 sm:bottom-1 left-0 w-full h-3 sm:h-3.5 bg-[var(--accent)]/40 -z-0 rounded-sm"
                   style={{ transform: "skewX(-6deg)" }}
@@ -42,14 +42,14 @@ export default function Hero() {
               </span>
               <br />
               <span className="text-[var(--gray-500)]">
-                ви лише працюєте
+                поки ви працюєте
               </span>
             </h1>
 
             {/* Subtitle */}
             <p className="animate-fade-in-up-delay-2 mt-5 text-lg leading-relaxed text-[var(--gray-600)] max-w-lg">
-              Одне посилання замінює блокнот, Telegram і дзвінки. Клієнт обирає
-              час, отримує нагадування — і приходить.
+              Visita — сторінка онлайн-запису для салонів, майстрів та клінік.
+              Клієнти обирають час і бронюють самі, 24/7 — без дзвінків і переписок.
             </p>
 
             {/* CTA Buttons */}

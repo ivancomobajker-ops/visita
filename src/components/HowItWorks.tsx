@@ -306,37 +306,37 @@ export default function HowItWorks() {
               style={{ transitionDelay: `${300 + index * 150}ms` }}
             >
               {/* Card */}
-              <div className="relative rounded-3xl bg-[var(--background)] border border-[var(--gray-100)] overflow-hidden transition-all duration-300 hover:border-[var(--gray-200)] hover:shadow-lg hover:shadow-black/[0.03] hover:-translate-y-1 flex flex-col">
-                {/* Step number + title bar */}
-                <div className="flex items-center gap-3 px-5 sm:px-6 pt-5 sm:pt-6 pb-4 border-b border-[var(--gray-100)]">
-                  <div
-                    className={`w-10 h-10 rounded-xl ${step.lightColor} ${step.borderColor} border flex items-center justify-center shrink-0`}
-                  >
-                    <span
-                      className={`text-sm font-extrabold ${step.textColor}`}
+                <div className="relative rounded-3xl bg-[var(--background)] border border-[var(--gray-100)] overflow-hidden transition-all duration-300 hover:border-[var(--gray-200)] hover:shadow-lg hover:shadow-black/[0.03] hover:-translate-y-1 flex flex-col h-full">
+                  {/* Step number + title bar */}
+                  <div className="flex items-center gap-3 px-5 sm:px-6 pt-5 sm:pt-6 pb-4 border-b border-[var(--gray-100)]">
+                    <div
+                      className={`w-10 h-10 rounded-xl ${step.lightColor} ${step.borderColor} border flex items-center justify-center shrink-0`}
                     >
-                      {step.number}
-                    </span>
+                      <span
+                        className={`text-sm font-extrabold ${step.textColor}`}
+                      >
+                        {step.number}
+                      </span>
+                    </div>
+                    <h3 className="text-lg sm:text-xl font-bold text-[var(--foreground)]">
+                      {step.title}
+                    </h3>
                   </div>
-                  <h3 className="text-lg sm:text-xl font-bold text-[var(--foreground)]">
-                    {step.title}
-                  </h3>
-                </div>
 
-                {/* Mockup area */}
-                <div
-                  className={`${step.lightColor}/40 border-b border-[var(--gray-100)]`}
-                >
-                  {step.mockup}
-                </div>
+                  {/* Text content — fixed position under title */}
+                  <div className="px-5 sm:px-6 pt-5 pb-4">
+                    <p className="text-[15px] leading-relaxed text-[var(--gray-500)]">
+                      {step.description}
+                    </p>
+                  </div>
 
-                {/* Text content */}
-                <div className="p-5 sm:p-6 flex-1">
-                  <p className="text-[15px] leading-relaxed text-[var(--gray-500)]">
-                    {step.description}
-                  </p>
+                  {/* Mockup area — fills remaining space */}
+                  <div
+                    className={`${step.lightColor}/40 border-t border-[var(--gray-100)] flex-1`}
+                  >
+                    {step.mockup}
+                  </div>
                 </div>
-              </div>
 
               {/* Connector arrow between steps (desktop) */}
               {index < 2 && (

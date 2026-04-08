@@ -47,15 +47,14 @@ export default function CtaBanner() {
               {/* Left: text */}
               <div>
                 <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight">
-                  Готові забути
+                  Запустіть свій
                   <br />
-                  про хаос із{" "}
-                  <span className="text-[var(--accent)]">записами?</span>
+                  <span className="text-[var(--accent)]">онлайн-запис</span> за 5 хвилин
                 </h2>
 
                 <p className="mt-5 text-lg text-white/60 max-w-md leading-relaxed">
-                  Приєднуйтесь до 500+ майстрів, які вже автоматизували свій
-                  запис і зосередились на головному — на роботі.
+                  Створіть персональну сторінку запису, поділіться посиланням —
+                  і клієнти бронюватимуть самі. Без дзвінків, без месенджерів.
                 </p>
 
                 <div className="mt-8 flex flex-col sm:flex-row gap-3">

@@ -136,9 +136,7 @@ export default function ProblemSolution() {
                         {s.isNew ? (
                           <span className="text-[10px] font-bold text-[var(--foreground)] bg-[var(--accent)] px-2 py-0.5 rounded-full">НОВИЙ</span>
                         ) : (
-                          <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
-                            <path d="M7.75 12L10.58 14.83L16.25 9.17" stroke="#10B981" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                          </svg>
+                          <span className="text-[10px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">OK</span>
                         )}
                       </div>
                       <span className="text-xs text-[var(--gray-500)]">{s.srv}</span>
