@@ -84,7 +84,7 @@ export default function FAQ() {
           <p className="mt-2 text-lg text-[var(--gray-500)]">
             Не знайшли відповідь?{" "}
             <a
-              href="mailto:hello@visita.ua"
+              href="mailto:office@visita.com.ua"
               className="text-[var(--accent-dark)] hover:underline"
             >
               Напишіть нам

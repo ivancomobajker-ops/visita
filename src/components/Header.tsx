@@ -1,5 +1,7 @@
 "use client";
 
+import Image from "next/image";
+import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useLeadForm } from "./LeadFormContext";
 
@@ -36,10 +38,10 @@ export default function Header() {
   }, []);
 
   const navLinks = [
-    { label: "Як це працює", href: "#how-it-works", id: "how-it-works" },
-    { label: "Можливості", href: "#features", id: "features" },
-    { label: "Тарифи", href: "#pricing", id: "pricing" },
-    { label: "FAQ", href: "#faq", id: "faq" },
+    { label: "Як це працює", href: "/#how-it-works", id: "how-it-works" },
+    { label: "Можливості", href: "/#features", id: "features" },
+    { label: "Тарифи", href: "/#pricing", id: "pricing" },
+    { label: "FAQ", href: "/#faq", id: "faq" },
   ];
 
   return (
@@ -53,14 +55,14 @@ export default function Header() {
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <div className="flex h-16 sm:h-[68px] items-center justify-between">
           {/* Logo */}
-          <a href="/" className="flex items-center gap-2.5 group shrink-0">
-            <div className="relative w-8 h-8 rounded-xl bg-[var(--accent)] flex items-center justify-center transition-all duration-300 group-hover:scale-105 group-hover:shadow-md group-hover:shadow-[var(--accent)]/30">
-              <span className="text-sm font-extrabold text-[var(--foreground)] leading-none">V</span>
+          <Link href="/" className="flex items-center gap-3 group shrink-0">
+            <div className="relative w-10 h-10 rounded-2xl overflow-hidden bg-[var(--accent)] flex items-center justify-center transition-all duration-300 group-hover:scale-105 group-hover:shadow-md group-hover:shadow-[var(--accent)]/30">
+              <Image src="/appIcon.png" alt="Visita logo" fill sizes="40px" className="object-cover" />
             </div>
             <span className="text-lg font-bold tracking-tight text-[var(--foreground)]">
               Visita
             </span>
-          </a>
+          </Link>
 
           {/* Desktop Nav — pill style */}
           <nav className="hidden md:flex items-center">

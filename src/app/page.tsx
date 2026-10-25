@@ -8,6 +8,11 @@ import Pricing from "@/components/Pricing";
 import CtaBanner from "@/components/CtaBanner";
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  alternates: { canonical: "/" },
+};
 
 export default function Home() {
   return (
