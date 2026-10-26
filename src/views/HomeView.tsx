@@ -8,18 +8,19 @@ import Pricing from "@/components/Pricing";
 import CtaBanner from "@/components/CtaBanner";
 import FAQ from "@/components/FAQ";
 import Footer from "@/components/Footer";
-import type { Metadata } from "next";
+import { getDictionary, pageMetadata, type Locale } from "@/i18n";
 
-export const metadata: Metadata = {
-  alternates: { canonical: "/" },
-};
+export function homeMetadata(lang: Locale) {
+  const t = getDictionary(lang).meta;
+  return pageMetadata(lang, "/", { title: t.homeTitle, description: t.homeDescription });
+}
 
-export default function Home() {
+export default function HomeView({ lang }: { lang: Locale }) {
   return (
     <>
       <Header />
       <main>
-        <Hero />
+        <Hero lang={lang} />
         <SocialProof />
         <ProblemSolution />
         <HowItWorks />
@@ -28,7 +29,7 @@ export default function Home() {
         <CtaBanner />
         <FAQ />
       </main>
-      <Footer />
+      <Footer lang={lang} />
     </>
   );
 }

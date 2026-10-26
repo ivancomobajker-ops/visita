@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useLeadForm } from "./LeadFormContext";
+import { useI18n } from "@/i18n/I18nProvider";
 
 function useInView(threshold = 0.15) {
   const ref = useRef<HTMLDivElement>(null);
@@ -21,29 +22,22 @@ function useInView(threshold = 0.15) {
   return { ref, inView };
 }
 
-const features = [
-  "Онлайн-запис 24/7",
-  "Розумний календар",
-  "Клієнтська база",
-  "Telegram та SMS нагадування",
-  "Аналітика та звіти",
-  "Портфоліо та відгуки",
-  "Маркетплейс Visita",
-  "Захист даних (GDPR)",
-];
-
-const competitorRows = [
-  { feature: "Онлайн-запис", us: true, them: true },
-  { feature: "Нагадування клієнтам", us: true, them: false },
-  { feature: "Аналітика", us: true, them: false },
-  { feature: "Маркетплейс", us: true, them: false },
-  { feature: "Простий старт (5 хв)", us: true, them: false },
-  { feature: "Прихованих доплат", us: false, them: true },
+// Last row is "hidden fees": Visita has none, others do (shown as a red cross).
+const competitorMarks = [
+  { us: true, them: true },
+  { us: true, them: false },
+  { us: true, them: false },
+  { us: true, them: false },
+  { us: true, them: false },
+  { us: false, them: true, negative: true },
 ];
 
 export default function Pricing() {
   const { ref, inView } = useInView(0.1);
   const { open: openLeadForm } = useLeadForm();
+  const { t: dict } = useI18n();
+  const t = dict.pricing;
+  const competitorRows = competitorMarks.map((m, i) => ({ ...m, feature: t.rows[i] }));
   const [priceAnimated, setPriceAnimated] = useState(false);
 
   useEffect(() => {
@@ -63,14 +57,14 @@ export default function Pricing() {
               inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
             }`}
           >
-            Одна ціна — все включено
+            {t.title}
           </h2>
           <p
             className={`mt-3 text-lg text-[var(--gray-500)] transition-all duration-700 delay-100 ${
               inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
             }`}
           >
-            Без прихованих платежів і тарифних сіток
+            {t.subtitle}
           </p>
         </div>
 
@@ -82,7 +76,7 @@ export default function Pricing() {
           {/* Left — competitor comparison (gray, subdued) */}
           <div className="rounded-3xl bg-[var(--gray-50)] border border-[var(--gray-100)] p-6 sm:p-8">
             <p className="text-sm font-semibold text-[var(--gray-400)] uppercase tracking-wider mb-6">
-              Типові рішення
+              {t.typical}
             </p>
 
             <div className="space-y-0">
@@ -96,7 +90,7 @@ export default function Pricing() {
                     {/* Them */}
                     <div className="w-16 flex justify-center">
                       {row.them ? (
-                        row.feature === "Прихованих доплат" ? (
+                        row.negative ? (
                           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#EF4444" strokeWidth="2.5" strokeLinecap="round">
                             <path d="M18 6L6 18M6 6l12 12" />
                           </svg>
@@ -130,16 +124,16 @@ export default function Pricing() {
 
             {/* Column labels */}
             <div className="flex items-center justify-end mt-4 gap-6">
-              <span className="w-16 text-center text-xs font-medium text-[var(--gray-400)]">Інші</span>
+              <span className="w-16 text-center text-xs font-medium text-[var(--gray-400)]">{t.others}</span>
               <span className="w-16 text-center text-xs font-bold text-[var(--accent-dark)]">Visita</span>
             </div>
 
             <div className="mt-6 pt-5 border-t border-[var(--gray-100)] flex items-end justify-between">
               <div>
-                <p className="text-xs text-[var(--gray-400)]">Типова вартість</p>
-                <p className="text-lg font-bold text-[var(--gray-500)]">2 000 – 5 000 ₴<span className="text-sm font-normal text-[var(--gray-400)]"> / міс</span></p>
+                <p className="text-xs text-[var(--gray-400)]">{t.typicalCost}</p>
+                <p className="text-lg font-bold text-[var(--gray-500)]">{t.typicalPrice}<span className="text-sm font-normal text-[var(--gray-400)]"> {t.perMonth}</span></p>
               </div>
-              <p className="text-xs text-[var(--gray-400)]">+ приховані доплати</p>
+              <p className="text-xs text-[var(--gray-400)]">{t.hiddenFees}</p>
             </div>
           </div>
 
@@ -147,7 +141,7 @@ export default function Pricing() {
           <div className="relative rounded-3xl bg-white border-2 border-[var(--accent)] shadow-xl shadow-[var(--accent)]/10 overflow-hidden">
             {/* Popular badge */}
             <div className="absolute top-0 right-6 bg-[var(--accent)] text-[var(--foreground)] text-xs font-bold px-4 py-1.5 rounded-b-xl">
-              Найкращий вибір
+              {t.bestChoice}
             </div>
 
             <div className="px-6 sm:px-8 pt-8 pb-7">
@@ -158,26 +152,26 @@ export default function Pricing() {
                     priceAnimated ? "opacity-100 scale-100" : "opacity-0 scale-75"
                   }`}
                 >
-                  1299
+                  {t.price}
                 </span>
                 <div className="flex flex-col mb-2">
-                  <span className="text-lg font-bold text-[var(--accent-dark)]">грн</span>
-                  <span className="text-sm text-[var(--gray-400)] -mt-1">/ міс</span>
+                  <span className="text-lg font-bold text-[var(--accent-dark)]">{t.currency}</span>
+                  <span className="text-sm text-[var(--gray-400)] -mt-1">{t.perMonth}</span>
                 </div>
               </div>
 
               <p className="text-sm text-[var(--gray-500)] mb-6">
-                14 днів безкоштовно · без картки
+                {t.trial}
               </p>
 
               {/* CTA */}
               <button onClick={openLeadForm} className="w-full h-13 rounded-2xl bg-[var(--accent)] hover:bg-[var(--accent-dark)] text-[var(--foreground)] font-bold text-base tracking-wide transition-all duration-200 shadow-lg shadow-[var(--accent)]/20 hover:shadow-xl hover:shadow-[var(--accent)]/30 hover:-translate-y-0.5 active:translate-y-0 cursor-pointer mb-6">
-                Спробувати безкоштовно
+                {dict.common.tryFree}
               </button>
 
               {/* Features list */}
               <ul className="space-y-3">
-                {features.map((f, i) => (
+                {t.features.map((f, i) => (
                   <li key={i} className="flex items-center gap-3">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" className="shrink-0">
                       <circle cx="12" cy="12" r="10" fill="var(--accent-light)" />
@@ -197,7 +191,7 @@ export default function Pricing() {
                   <line x1="22" y1="11" x2="16" y2="11" />
                 </svg>
                 <span className="text-sm text-[var(--gray-500)]">
-                  Команда: <span className="font-bold text-[var(--foreground)]">+169 грн</span> / співробітник
+                  {t.team} <span className="font-bold text-[var(--foreground)]">{t.teamPrice}</span> {t.perEmployee}
                 </span>
               </div>
             </div>

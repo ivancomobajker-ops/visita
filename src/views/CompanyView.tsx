@@ -1,39 +1,53 @@
-import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { COMPANY } from "@/lib/company";
+import { fill, getDictionary, pageMetadata, type Locale } from "@/i18n";
 
-export const metadata: Metadata = {
-  title: `Про компанію — ${COMPANY.brand} | ${COMPANY.shortName}`,
-  description: `${COMPANY.brand} — онлайн-платформа для запису на послуги, що належить та управляється ${COMPANY.shortName}. Код ЄДРПОУ ${COMPANY.edrpou}.`,
-  alternates: { canonical: "/company" },
-};
+// English readers see the Latin-script name first, with the official Ukrainian name after it.
+function companyValues(lang: Locale) {
+  return {
+    company: lang === "en" ? `${COMPANY.latinName} (${COMPANY.shortName})` : COMPANY.shortName,
+    latin: COMPANY.latinName,
+    edrpou: COMPANY.edrpou,
+  };
+}
 
-const details = [
-  { term: "Повна назва", value: COMPANY.fullName },
-  { term: "Скорочена назва", value: COMPANY.shortName },
-  { term: "Назва латиницею", value: COMPANY.latinName },
-  { term: "Код ЄДРПОУ", value: COMPANY.edrpou },
-  { term: "Юридична адреса", value: COMPANY.address.full },
-];
+export function companyMetadata(lang: Locale) {
+  const t = getDictionary(lang).company;
+  const values = companyValues(lang);
+  return pageMetadata(lang, "/company", {
+    title: `${t.title} — ${COMPANY.brand} | ${lang === "en" ? COMPANY.latinName : COMPANY.shortName}`,
+    description: fill(t.metaDescription, values),
+  });
+}
 
-export default function CompanyPage() {
+export default function CompanyView({ lang }: { lang: Locale }) {
+  const t = getDictionary(lang).company;
+  const values = companyValues(lang);
+
+  const details = [
+    { term: t.fullName, value: COMPANY.fullName },
+    { term: t.shortName, value: COMPANY.shortName },
+    { term: t.latinName, value: COMPANY.latinName },
+    { term: t.edrpou, value: COMPANY.edrpou },
+    { term: t.address, value: COMPANY.address.full },
+  ];
+
   return (
     <>
       <Header />
       <main className="relative flex-1 pt-28 sm:pt-32 pb-16 sm:pb-20">
         <div className="mx-auto max-w-3xl px-5 sm:px-8">
           <h1 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--foreground)]">
-            Про компанію
+            {t.title}
           </h1>
           <p className="mt-4 text-lg leading-relaxed text-[var(--gray-600)]">
-            {COMPANY.brand} — онлайн-платформа для запису на послуги, що належить
-            та управляється {COMPANY.shortName}.
+            {fill(t.intro, values)}
           </p>
 
           <section aria-labelledby="legal-details" className="mt-10">
             <h2 id="legal-details" className="text-xl font-bold tracking-tight text-[var(--foreground)]">
-              Реквізити
+              {t.details}
             </h2>
             <dl className="mt-4 rounded-2xl border border-[var(--gray-100)] bg-white divide-y divide-[var(--gray-100)]">
               {details.map((item) => (
@@ -43,7 +57,7 @@ export default function CompanyPage() {
                 </div>
               ))}
               <div className="flex flex-col sm:flex-row gap-1 sm:gap-6 p-5">
-                <dt className="sm:w-48 shrink-0 text-sm text-[var(--gray-500)]">Електронна пошта</dt>
+                <dt className="sm:w-48 shrink-0 text-sm text-[var(--gray-500)]">{t.email}</dt>
                 <dd className="text-[15px] font-medium">
                   <a href={`mailto:${COMPANY.email}`} className="text-[var(--accent-dark)] hover:underline break-all">
                     {COMPANY.email}
@@ -55,22 +69,19 @@ export default function CompanyPage() {
 
           <section aria-labelledby="relationship" className="mt-10">
             <h2 id="relationship" className="text-xl font-bold tracking-tight text-[var(--foreground)]">
-              {COMPANY.brand} та {COMPANY.shortName}
+              {fill(t.relationshipTitle, values)}
             </h2>
             <p className="mt-3 text-[15px] leading-relaxed text-[var(--gray-600)]">
-              Платформа {COMPANY.brand} та цей вебсайт належать {COMPANY.shortName}{" "}
-              ({COMPANY.latinName}, код ЄДРПОУ {COMPANY.edrpou}). Компанія є власником
-              та оператором платформи {COMPANY.brand}.
+              {fill(t.relationship, values)}
             </p>
           </section>
 
           <section aria-labelledby="official-records" className="mt-10">
             <h2 id="official-records" className="text-xl font-bold tracking-tight text-[var(--foreground)]">
-              Офіційна інформація про компанію
+              {t.officialTitle}
             </h2>
             <p className="mt-3 text-[15px] leading-relaxed text-[var(--gray-600)]">
-              Відомості про {COMPANY.shortName} з Єдиного державного реєстру доступні
-              у відкритих джерелах:
+              {fill(t.officialIntro, values)}
             </p>
             <ul className="mt-4 flex flex-col gap-2">
               {COMPANY.registryLinks.map((link) => (
@@ -82,7 +93,7 @@ export default function CompanyPage() {
                     className="inline-flex items-center gap-2 text-[15px] font-medium text-[var(--accent-dark)] hover:underline break-all"
                   >
                     {link.label}: {link.href}
-                    <span className="sr-only"> (відкривається в новій вкладці)</span>
+                    <span className="sr-only">{t.newTab}</span>
                   </a>
                 </li>
               ))}
@@ -90,7 +101,7 @@ export default function CompanyPage() {
           </section>
         </div>
       </main>
-      <Footer />
+      <Footer lang={lang} />
     </>
   );
 }

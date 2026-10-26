@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useI18n } from "@/i18n/I18nProvider";
 
 function useInView(threshold = 0.12) {
   const ref = useRef<HTMLDivElement>(null);
@@ -21,21 +22,14 @@ function useInView(threshold = 0.12) {
 }
 
 /* ---- Data ---- */
-const chaosItems = [
-  { app: "Telegram", dot: "#2AABEE", msg: "Оля: А можна на завтра о 15?" },
-  { app: "Instagram", dot: "#E4405F", msg: "Працюєте в неділю??" },
-  { app: "Дзвінок", dot: "#F97316", msg: "+380 67 ••• — під час фарбування" },
-  { app: "Viber", dot: "#7360F2", msg: "Хочу перенести на п'ятницю" },
-];
-
-const visitaItems = [
-  { time: "10:00", name: "Оля М.", srv: "Манікюр", confirmed: true },
-  { time: "11:30", name: "Анна К.", srv: "Фарбування", confirmed: true },
-  { time: "14:00", name: "Марина Ш.", srv: "Стрижка", isNew: true },
-];
+const chaosDots = ["#2AABEE", "#E4405F", "#F97316", "#7360F2"];
+const visitaTimes = ["10:00", "11:30", "14:00"];
+const chaosStatColors = ["text-red-400", "text-orange-400", "text-amber-400"];
+const visitaStatColors = ["text-emerald-500", "text-[var(--accent-dark)]", "text-[var(--foreground)]"];
 
 export default function ProblemSolution() {
   const { ref, inView } = useInView();
+  const t = useI18n().t.problem;
 
   return (
     <section ref={ref} className="relative py-16 sm:py-24 overflow-hidden">
@@ -46,9 +40,9 @@ export default function ProblemSolution() {
         {/* Header */}
         <div className={`text-center max-w-xl mx-auto mb-12 transition-all duration-700 ${inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}>
           <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--foreground)]">
-            Як виглядає ваш запис <span className="number-highlight">зараз</span>
+            {t.titleStart} <span className="number-highlight">{t.titleHighlight}</span>
           </h2>
-          <p className="mt-3 text-lg text-[var(--gray-500)]">Порівняйте два підходи до ведення записів</p>
+          <p className="mt-3 text-lg text-[var(--gray-500)]">{t.subtitle}</p>
         </div>
 
         {/* Two-column comparison */}
@@ -66,15 +60,15 @@ export default function ProblemSolution() {
                 </svg>
               </div>
               <span className="text-base font-bold text-white">
-                День без Visita
+                {t.without}
               </span>
             </div>
 
             {/* Messages */}
             <div className="relative space-y-2.5">
-              {chaosItems.map((item, i) => (
+              {t.chaos.map((item, i) => (
                 <div key={i} className="flex items-center gap-3 px-4 py-3 rounded-xl bg-white/[0.05] border border-white/[0.06]">
-                  <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: item.dot }} />
+                  <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: chaosDots[i] }} />
                   <div className="min-w-0 flex-1">
                     <span className="text-xs font-semibold text-white/40 block mb-0.5">{item.app}</span>
                     <p className="text-sm text-white/60 truncate">{item.msg}</p>
@@ -85,13 +79,9 @@ export default function ProblemSolution() {
 
             {/* Stats */}
             <div className="relative mt-6 pt-5 border-t border-white/[0.06] grid grid-cols-3 gap-4">
-              {[
-                { val: "~3 год", label: "на переписки", color: "text-red-400" },
-                { val: "23%", label: "неявки", color: "text-orange-400" },
-                { val: "5+", label: "каналів", color: "text-amber-400" },
-              ].map((s, i) => (
+              {t.chaosStats.map((s, i) => (
                 <div key={i} className="text-center">
-                  <p className={`text-xl sm:text-2xl font-extrabold ${s.color}`}>{s.val}</p>
+                  <p className={`text-xl sm:text-2xl font-extrabold ${chaosStatColors[i]}`}>{s.val}</p>
                   <p className="text-xs text-white/30 mt-0.5">{s.label}</p>
                 </div>
               ))}
@@ -110,22 +100,24 @@ export default function ProblemSolution() {
                 </svg>
               </div>
               <span className="text-base font-bold text-[var(--foreground)]">
-                День з Visita
+                {t.with}
               </span>
             </div>
 
             {/* Calendar */}
             <div className="relative rounded-2xl border border-[var(--gray-100)] bg-[var(--background)] overflow-hidden">
               <div className="flex items-center justify-between px-4 py-3 border-b border-[var(--gray-100)]">
-                <span className="text-sm font-bold text-[var(--foreground)]">Четвер, 3 квітня</span>
+                <span className="text-sm font-bold text-[var(--foreground)]">{t.calendarDate}</span>
                 <div className="flex items-center gap-1.5">
                   <span className="w-2 h-2 rounded-full bg-emerald-400" />
-                  <span className="text-xs font-medium text-emerald-600">Онлайн</span>
+                  <span className="text-xs font-medium text-emerald-600">{t.online}</span>
                 </div>
               </div>
 
               <div className="divide-y divide-[var(--gray-50)]">
-                {visitaItems.map((s, i) => (
+                {t.bookings.map((b, i) => {
+                  const s = { ...b, time: visitaTimes[i], isNew: i === t.bookings.length - 1 };
+                  return (
                   <div key={i} className="flex items-center gap-3 px-4 py-3">
                     <span className="text-sm font-mono text-[var(--gray-400)] w-12 shrink-0 tabular-nums">
                       {s.time}
@@ -134,7 +126,7 @@ export default function ProblemSolution() {
                       <div className="flex items-center justify-between">
                         <span className="text-sm font-semibold text-[var(--foreground)]">{s.name}</span>
                         {s.isNew ? (
-                          <span className="text-[10px] font-bold text-[var(--foreground)] bg-[var(--accent)] px-2 py-0.5 rounded-full">НОВИЙ</span>
+                          <span className="text-[10px] font-bold text-[var(--foreground)] bg-[var(--accent)] px-2 py-0.5 rounded-full">{t.newBadge}</span>
                         ) : (
                           <span className="text-[10px] font-semibold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">OK</span>
                         )}
@@ -142,7 +134,8 @@ export default function ProblemSolution() {
                       <span className="text-xs text-[var(--gray-500)]">{s.srv}</span>
                     </div>
                   </div>
-                ))}
+                  );
+                })}
               </div>
             </div>
 
@@ -154,20 +147,16 @@ export default function ProblemSolution() {
                 </svg>
               </div>
               <p className="text-sm text-[var(--foreground)]">
-                <span className="font-semibold">Нагадування автоматично</span>
-                <span className="text-[var(--gray-500)]"> · SMS за 2 год</span>
+                <span className="font-semibold">{t.reminder}</span>
+                <span className="text-[var(--gray-500)]">{t.reminderDetail}</span>
               </p>
             </div>
 
             {/* Stats */}
             <div className="relative mt-5 pt-5 border-t border-[var(--gray-100)] grid grid-cols-3 gap-4">
-              {[
-                { val: "0 хв", label: "ручних записів", color: "text-emerald-500" },
-                { val: "−89%", label: "неявок", color: "text-[var(--accent-dark)]" },
-                { val: "1 лінк", label: "замість 5 каналів", color: "text-[var(--foreground)]" },
-              ].map((s, i) => (
+              {t.visitaStats.map((s, i) => (
                 <div key={i} className="text-center">
-                  <p className={`text-xl sm:text-2xl font-extrabold ${s.color}`}>{s.val}</p>
+                  <p className={`text-xl sm:text-2xl font-extrabold ${visitaStatColors[i]}`}>{s.val}</p>
                   <p className="text-xs text-[var(--gray-400)] mt-0.5">{s.label}</p>
                 </div>
               ))}

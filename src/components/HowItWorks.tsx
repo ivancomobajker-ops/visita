@@ -2,6 +2,8 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useLeadForm } from "./LeadFormContext";
+import { useI18n } from "@/i18n/I18nProvider";
+import type { Dictionary } from "@/i18n/dictionaries/uk";
 
 function useInView(threshold = 0.2) {
   const ref = useRef<HTMLDivElement>(null);
@@ -21,12 +23,12 @@ function useInView(threshold = 0.2) {
   return { ref, inView };
 }
 
-const steps = [
+function getSteps(t: Dictionary["howItWorks"]) {
+  return [
   {
     number: "01",
-    title: "Створіть профіль",
-    description:
-      "Зареєструйтесь за 2 хвилини. Додайте свої послуги, ціни та графік роботи. Жодних складних налаштувань.",
+    title: t.steps[0].title,
+    description: t.steps[0].description,
     accentColor: "bg-blue-500",
     lightColor: "bg-blue-50",
     borderColor: "border-blue-100",
@@ -58,7 +60,7 @@ const steps = [
         </div>
         {/* Services list */}
         <div className="space-y-2">
-          {["Стрижка жіноча", "Фарбування", "Укладка"].map((service, i) => (
+          {t.services.map((service, i) => (
             <div
               key={i}
               className="flex items-center justify-between p-2.5 rounded-xl bg-[var(--gray-50)] border border-[var(--gray-100)]/60"
@@ -66,11 +68,11 @@ const steps = [
               <div className="flex items-center gap-2">
                 <div className="w-1.5 h-1.5 rounded-full bg-[var(--accent)]" />
                 <span className="text-[11px] font-medium text-[var(--gray-700)]">
-                  {service}
+                  {service.name}
                 </span>
               </div>
               <span className="text-[11px] font-bold text-[var(--foreground)]">
-                {i === 0 ? "500₴" : i === 1 ? "1200₴" : "350₴"}
+                {service.price}
               </span>
             </div>
           ))}
@@ -84,16 +86,15 @@ const steps = [
               strokeLinecap="round"
             />
           </svg>
-          Додати послугу
+          {t.addService}
         </button>
       </div>
     ),
   },
   {
     number: "02",
-    title: "Поділіться посиланням",
-    description:
-      "Отримайте персональне посилання для запису. Додайте його в Instagram, Telegram або надішліть клієнтам.",
+    title: t.steps[1].title,
+    description: t.steps[1].description,
     accentColor: "bg-violet-500",
     lightColor: "bg-violet-50",
     borderColor: "border-violet-100",
@@ -103,7 +104,7 @@ const steps = [
         {/* Share link mockup */}
         <div className="rounded-xl bg-[var(--gray-50)] border border-[var(--gray-100)] p-3 mb-3">
           <p className="text-[10px] text-[var(--gray-400)] font-medium mb-1.5">
-            Ваше посилання для запису
+            {t.yourLink}
           </p>
           <div className="flex items-center gap-2">
             <div className="flex-1 px-3 py-2 rounded-lg bg-white border border-[var(--gray-200)] text-[11px] font-mono text-[var(--gray-600)] truncate">
@@ -129,13 +130,13 @@ const steps = [
         </div>
         {/* Share channels */}
         <p className="text-[10px] text-[var(--gray-400)] font-medium mb-2">
-          Поділитися через
+          {t.shareVia}
         </p>
         <div className="grid grid-cols-3 gap-2">
           {[
             { name: "Instagram", color: "bg-gradient-to-br from-purple-500 to-pink-500", icon: "IG" },
             { name: "Telegram", color: "bg-sky-500", icon: "TG" },
-            { name: "QR-код", color: "bg-[var(--gray-800)]", icon: "QR" },
+            { name: t.qrCode, color: "bg-[var(--gray-800)]", icon: "QR" },
           ].map((channel) => (
             <div
               key={channel.name}
@@ -157,9 +158,8 @@ const steps = [
   },
   {
     number: "03",
-    title: "Отримуйте записи",
-    description:
-      "Клієнти бронюють самі — ви отримуєте сповіщення. Автоматичні нагадування знижують неявки на 89%.",
+    title: t.steps[2].title,
+    description: t.steps[2].description,
     accentColor: "bg-emerald-500",
     lightColor: "bg-emerald-50",
     borderColor: "border-emerald-100",
@@ -168,32 +168,12 @@ const steps = [
       <div className="p-4">
         {/* Notifications mockup */}
         <div className="space-y-2.5">
-          {[
-            {
-              name: "Олена К.",
-              service: "Манікюр гель-лак",
-              time: "Сьогодні, 14:00",
-              status: "Підтверджено",
-              statusColor: "bg-emerald-100 text-emerald-700",
-              ago: "2 хв тому",
-            },
-            {
-              name: "Марина Ш.",
-              service: "Стрижка + Укладка",
-              time: "Завтра, 10:30",
-              status: "Новий",
-              statusColor: "bg-[var(--accent-light)] text-[var(--accent-dark)]",
-              ago: "15 хв тому",
-            },
-            {
-              name: "Ірина Б.",
-              service: "Брови корекція",
-              time: "Завтра, 16:00",
-              status: "Підтверджено",
-              statusColor: "bg-emerald-100 text-emerald-700",
-              ago: "1 год тому",
-            },
-          ].map((notif, i) => (
+          {t.notifications.map((n) => ({
+            ...n,
+            statusColor: n.isNew
+              ? "bg-[var(--accent-light)] text-[var(--accent-dark)]"
+              : "bg-emerald-100 text-emerald-700",
+          })).map((notif, i) => (
             <div
               key={i}
               className="flex items-start gap-3 p-2.5 rounded-xl bg-white border border-[var(--gray-100)] hover:border-[var(--gray-200)] transition-colors"
@@ -226,11 +206,16 @@ const steps = [
       </div>
     ),
   },
-];
+  ];
+}
 
 export default function HowItWorks() {
   const { ref, inView } = useInView(0.1);
   const { open: openLeadForm } = useLeadForm();
+  const { t: dict } = useI18n();
+  const t = dict.howItWorks;
+  const startFree = dict.common.startFree;
+  const steps = getSteps(t);
 
   return (
     <section
@@ -252,7 +237,7 @@ export default function HowItWorks() {
             }`}
           >
             <span className="text-sm font-medium text-[var(--gray-700)]">
-              Простіше ніж здається
+              {t.badge}
             </span>
           </div>
           <h2
@@ -262,10 +247,10 @@ export default function HowItWorks() {
                 : "opacity-0 translate-y-4"
             }`}
           >
-            Три кроки до
+            {t.titleStart}
             <br />
             <span className="relative inline-block">
-              повного календаря
+              {t.titleHighlight}
               <svg
                 className="absolute -bottom-1 left-0 w-full"
                 viewBox="0 0 300 12"
@@ -288,8 +273,7 @@ export default function HowItWorks() {
                 : "opacity-0 translate-y-4"
             }`}
           >
-            Налаштування займає менше 5 хвилин. Без технічних знань, без
-            допомоги розробників.
+            {t.subtitle}
           </p>
         </div>
 
@@ -373,7 +357,7 @@ export default function HowItWorks() {
             onClick={openLeadForm}
             className="btn-primary inline-flex items-center gap-2.5 h-13 px-8 text-base font-semibold text-[var(--foreground)] rounded-full cursor-pointer"
           >
-            Почати безкоштовно
+            {startFree}
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
               <path
                 d="M5 12h14M12 5l7 7-7 7"
@@ -385,7 +369,7 @@ export default function HowItWorks() {
             </svg>
           </button>
           <p className="mt-3 text-sm text-[var(--gray-400)]">
-            14 днів безкоштовно · без картки · скасувати будь-коли
+            {t.trust}
           </p>
         </div>
       </div>

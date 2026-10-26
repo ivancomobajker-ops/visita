@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useI18n } from "@/i18n/I18nProvider";
 
 function useInView(threshold = 0.15) {
   const ref = useRef<HTMLDivElement>(null);
@@ -28,9 +29,6 @@ const features = [
         <path d="M15.695 13.7H15.704M15.695 16.7H15.704M11.995 13.7H12.005M11.995 16.7H12.005M8.295 13.7H8.305M8.295 16.7H8.305" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     ),
-    title: "Розумний календар",
-    description:
-      "Клієнти бачать тільки вільні слоти. Ви контролюєте графік, перерви та вихідні в один клік.",
     color: "from-blue-500 to-indigo-600",
     lightBg: "bg-blue-50",
     lightText: "text-blue-600",
@@ -42,9 +40,6 @@ const features = [
         <path d="M15.71 15.18L12.61 13.33C12.07 13.01 11.63 12.24 11.63 11.61V7.51" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     ),
-    title: "Нагадування автоматично",
-    description:
-      "SMS або Telegram за 24 год і за 2 год до візиту. Неявки зменшуються на 89%.",
     color: "from-emerald-500 to-teal-600",
     lightBg: "bg-emerald-50",
     lightText: "text-emerald-600",
@@ -58,9 +53,6 @@ const features = [
         <path d="M16.44 18L17.43 18.99L19.56 17.02" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     ),
-    title: "База клієнтів",
-    description:
-      "Історія візитів, уподобання та нотатки — все під рукою. Персональний підхід без зусиль.",
     color: "from-violet-500 to-purple-600",
     lightBg: "bg-violet-50",
     lightText: "text-violet-600",
@@ -74,9 +66,6 @@ const features = [
         <path d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     ),
-    title: "Аналітика доходів",
-    description:
-      "Дашборд з виручкою, кількістю записів і завантаженістю. Бачите тренди — приймаєте рішення.",
     color: "from-amber-500 to-orange-600",
     lightBg: "bg-amber-50",
     lightText: "text-amber-600",
@@ -87,9 +76,6 @@ const features = [
         <path d="M12.62 20.81C12.28 20.93 11.72 20.93 11.38 20.81C8.48 19.82 2 15.69 2 8.69C2 5.6 4.49 3.1 7.56 3.1C9.38 3.1 10.99 3.98 12 5.34C13.01 3.98 14.63 3.1 16.44 3.1C19.51 3.1 22 5.6 22 8.69C22 15.69 15.52 19.82 12.62 20.81Z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     ),
-    title: "Персональна сторінка",
-    description:
-      "Гарна сторінка з вашими послугами, портфоліо та відгуками. Готова приймати клієнтів.",
     color: "from-rose-500 to-pink-600",
     lightBg: "bg-rose-50",
     lightText: "text-rose-600",
@@ -101,9 +87,6 @@ const features = [
         <path d="M17 9L13.87 11.5C12.84 12.32 11.15 12.32 10.12 11.5L7 9" stroke="currentColor" strokeWidth="1.5" strokeMiterlimit="10" strokeLinecap="round" strokeLinejoin="round" />
       </svg>
     ),
-    title: "SMS та Telegram",
-    description:
-      "Повідомлення клієнтам через зручний канал. Підтвердження, нагадування та акції — автоматично.",
     color: "from-cyan-500 to-blue-600",
     lightBg: "bg-cyan-50",
     lightText: "text-cyan-600",
@@ -112,6 +95,7 @@ const features = [
 
 export default function Features() {
   const { ref, inView } = useInView();
+  const t = useI18n().t.features;
 
   return (
     <section id="features" className="relative py-20 sm:py-28 overflow-hidden">
@@ -128,7 +112,7 @@ export default function Features() {
             }`}
           >
             <span className="text-sm font-medium text-[var(--accent-dark)]">
-              Можливості
+              {t.badge}
             </span>
           </div>
 
@@ -137,8 +121,8 @@ export default function Features() {
               inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
             }`}
           >
-            Все, що потрібно для{" "}
-            <span className="number-highlight">зростання</span>
+            {t.titleStart}{" "}
+            <span className="number-highlight">{t.titleHighlight}</span>
           </h2>
 
           <p
@@ -146,16 +130,17 @@ export default function Features() {
               inView ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"
             }`}
           >
-            Від онлайн-запису до аналітики — один інструмент замість десятка
-            сервісів.
+            {t.subtitle}
           </p>
         </div>
 
         {/* Features grid */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
-          {features.map((feature, i) => (
+          {features.map((f, i) => {
+            const feature = { ...f, ...t.items[i] };
+            return (
             <div
-              key={feature.title}
+              key={i}
               className={`group relative rounded-2xl bg-white border border-[var(--gray-100)] p-6 sm:p-7 transition-all duration-700 hover:border-[var(--gray-200)] hover:shadow-lg hover:shadow-black/[0.03] hover:-translate-y-0.5 ${
                 inView
                   ? "opacity-100 translate-y-0"
@@ -183,7 +168,8 @@ export default function Features() {
                 className={`absolute bottom-0 left-6 right-6 h-0.5 rounded-full bg-gradient-to-r ${feature.color} opacity-0 group-hover:opacity-100 transition-opacity duration-300`}
               />
             </div>
-          ))}
+            );
+          })}
         </div>
       </div>
     </section>

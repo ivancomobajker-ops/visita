@@ -1,7 +1,10 @@
 import Image from "next/image";
 import CtaButton from "./CtaButton";
+import { getDictionary, type Locale } from "@/i18n";
 
-export default function Hero() {
+export default function Hero({ lang }: { lang: Locale }) {
+  const t = getDictionary(lang).hero;
+  const common = getDictionary(lang).common;
   return (
     <section className="relative overflow-hidden">
       {/* Gradient mesh background */}
@@ -26,15 +29,15 @@ export default function Hero() {
                 <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
               </span>
               <span className="text-sm font-medium text-[var(--gray-600)]">
-                Вже 500+ майстрів з усієї України
+                {t.badge}
               </span>
             </div>
 
             {/* Headline */}
             <h1 className="animate-fade-in-up-delay-1 text-4xl sm:text-5xl lg:text-[56px] font-extrabold leading-[1.08] tracking-tight text-[var(--foreground)]">
-              Онлайн-запис,{" "}
+              {t.titleStart}{" "}
               <span className="relative inline-block">
-                <span className="relative z-10">який працює</span>
+                <span className="relative z-10">{t.titleHighlight}</span>
                 <span
                   className="absolute bottom-0.5 sm:bottom-1 left-0 w-full h-3 sm:h-3.5 bg-[var(--accent)]/40 -z-0 rounded-sm"
                   style={{ transform: "skewX(-6deg)" }}
@@ -42,20 +45,19 @@ export default function Hero() {
               </span>
               <br />
               <span className="text-[var(--gray-500)]">
-                поки ви працюєте
+                {t.titleEnd}
               </span>
             </h1>
 
             {/* Subtitle */}
             <p className="animate-fade-in-up-delay-2 mt-5 text-lg leading-relaxed text-[var(--gray-600)] max-w-lg">
-              Visita — сторінка онлайн-запису для салонів, майстрів та клінік.
-              Клієнти обирають час і бронюють самі, 24/7 — без дзвінків і переписок.
+              {t.subtitle}
             </p>
 
             {/* CTA Buttons */}
             <div className="animate-fade-in-up-delay-3 mt-7 flex flex-col sm:flex-row gap-3">
               <CtaButton className="btn-primary inline-flex items-center justify-center gap-2.5 h-13 px-7 text-base font-semibold text-[var(--foreground)] rounded-full cursor-pointer">
-                Спробувати безкоштовно
+                {common.tryFree}
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none">
                   <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
                 </svg>
@@ -64,7 +66,7 @@ export default function Hero() {
 
             {/* Trust line */}
             <p className="animate-fade-in-up-delay-3 mt-5 text-sm text-[var(--gray-500)]">
-              14 днів безкоштовно · без картки · старт за 5 хвилин
+              {t.trust}
             </p>
           </div>
 
@@ -76,7 +78,7 @@ export default function Hero() {
                 <div className="relative rounded-2xl overflow-hidden aspect-[3/4]">
                   <Image
                     src="https://images.unsplash.com/photo-1560066984-138dadb4c035?w=600&q=80"
-                    alt="Сучасний салон краси"
+                    alt={t.mainPhotoAlt}
                     fill
                     className="object-cover photo-zoom"
                     priority
@@ -93,8 +95,8 @@ export default function Hero() {
                         </svg>
                       </div>
                       <div>
-                        <p className="text-[11px] font-bold text-[var(--foreground)]">12 записів</p>
-                        <p className="text-[9px] text-[var(--gray-500)]">сьогодні</p>
+                        <p className="text-[11px] font-bold text-[var(--foreground)]">{t.todayCount}</p>
+                        <p className="text-[9px] text-[var(--gray-500)]">{t.today}</p>
                       </div>
                     </div>
                   </div>
@@ -107,7 +109,7 @@ export default function Hero() {
                 <div className="animate-scale-in relative rounded-2xl overflow-hidden aspect-[3/4] group">
                   <Image
                     src="https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400&q=80"
-                    alt="Майстер краси"
+                    alt={t.secondPhotoAlt}
                     fill
                     className="object-cover photo-zoom"
                     sizes="(max-width: 1024px) 40vw, 18vw"
@@ -134,7 +136,7 @@ export default function Hero() {
                     </svg>
                   </div>
                   <p className="text-2xl font-extrabold number-highlight leading-none">+34%</p>
-                  <p className="text-[11px] text-[var(--gray-500)] font-medium mt-1">записів щомісяця</p>
+                  <p className="text-[11px] text-[var(--gray-500)] font-medium mt-1">{t.growthLabel}</p>
                 </div>
               </div>
             </div>
@@ -149,8 +151,8 @@ export default function Hero() {
                   </svg>
                 </div>
                 <div>
-                  <p className="text-[11px] font-bold text-[var(--foreground)]">Новий запис!</p>
-                  <p className="text-[10px] text-[var(--gray-400)]">Ірина Д. — завтра, 11:00</p>
+                  <p className="text-[11px] font-bold text-[var(--foreground)]">{t.newBooking}</p>
+                  <p className="text-[10px] text-[var(--gray-400)]">{t.newBookingDetails}</p>
                 </div>
               </div>
             </div>
@@ -165,16 +167,7 @@ export default function Hero() {
           <div className="flex animate-marquee whitespace-nowrap">
             {[...Array(2)].map((_, setIndex) => (
               <div key={setIndex} className="flex items-center shrink-0">
-                {[
-                  "Онлайн-запис 24/7",
-                  "Автоматичні нагадування",
-                  "Розумний календар",
-                  "Клієнтська база",
-                  "Аналітика доходів",
-                  "SMS та Telegram",
-                  "Без неявок",
-                  "Для салонів і майстрів",
-                ].map((item, i) => (
+                {t.marquee.map((item, i) => (
                   <div key={`${setIndex}-${i}`} className="flex items-center gap-3 mx-4 sm:mx-6">
                     <span className="w-1.5 h-1.5 rounded-full bg-[var(--accent)] shrink-0" />
                     <span className="text-sm font-medium text-[var(--gray-500)]">{item}</span>

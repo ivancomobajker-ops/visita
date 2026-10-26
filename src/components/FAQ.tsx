@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useI18n } from "@/i18n/I18nProvider";
 
 function useInView(threshold = 0.1) {
   const ref = useRef<HTMLDivElement>(null);
@@ -20,51 +21,11 @@ function useInView(threshold = 0.1) {
   return { ref, inView };
 }
 
-const faqs = [
-  {
-    question: "Чи можна спробувати безкоштовно?",
-    answer:
-      "Так! 14 днів безкоштовно, без картки. Далі — один тариф 1299 грн/міс, у який входить усе.",
-  },
-  {
-    question: "Скільки часу на налаштування?",
-    answer:
-      "3–5 хвилин. Реєстрація → послуги → графік — готово. Жодних складних інтеграцій.",
-  },
-  {
-    question: "Як клієнти записуються?",
-    answer:
-      "Через ваше посилання visita.ua/ім'я — обирають послугу, час і підтверджують. 30 секунд.",
-  },
-  {
-    question: "Можна підключити команду?",
-    answer:
-      "Так. Кожен співробітник — +169 грн/міс до тарифу. Окремий календар і статистика для кожного.",
-  },
-  {
-    question: "Які нагадування отримає клієнт?",
-    answer:
-      "Підтвердження одразу, нагадування за 24 год та 2 год. Канали: Telegram та SMS — входять у тариф.",
-  },
-  {
-    question: "Чи можна відмінити підписку?",
-    answer:
-      "Так, будь-коли. Без штрафів. Доступ до кінця оплаченого періоду, дані зберігаються.",
-  },
-  {
-    question: "Є мобільний додаток?",
-    answer:
-      "Visita — веб-додаток, оптимізований для мобільних. Можна додати на екран як PWA. Нативний додаток — скоро.",
-  },
-  {
-    question: "Чи безпечні дані клієнтів?",
-    answer:
-      "Шифрування, сервери в ЄС, відповідність GDPR. Дані належать вам і ніколи не передаються третім особам.",
-  },
-];
 
 export default function FAQ() {
   const { ref, inView } = useInView();
+  const t = useI18n().t.faq;
+  const faqs = t.items;
   const [openId, setOpenId] = useState<number | null>(null);
 
   return (
@@ -79,15 +40,15 @@ export default function FAQ() {
           }`}
         >
           <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-[var(--foreground)]">
-            Часті питання
+            {t.title}
           </h2>
           <p className="mt-2 text-lg text-[var(--gray-500)]">
-            Не знайшли відповідь?{" "}
+            {t.notFound}{" "}
             <a
               href="mailto:office@visita.com.ua"
               className="text-[var(--accent-dark)] hover:underline"
             >
-              Напишіть нам
+              {t.writeUs}
             </a>
           </p>
         </div>

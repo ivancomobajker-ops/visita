@@ -3,9 +3,13 @@
 import Link from "next/link";
 import { useState, useEffect, type FormEvent } from "react";
 import { useLeadForm } from "./LeadFormContext";
+import { useI18n } from "@/i18n/I18nProvider";
+import { localePath } from "@/i18n/config";
 
 export default function LeadForm() {
   const { isOpen, close } = useLeadForm();
+  const { lang, t: dict } = useI18n();
+  const t = dict.leadForm;
 
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -75,16 +79,16 @@ export default function LeadForm() {
           <div className="flex items-center justify-between px-6 py-5 border-b border-[var(--gray-100)]">
             <div>
               <h3 className="text-lg font-bold text-[var(--foreground)]">
-                Спробувати безкоштовно
+                {dict.common.tryFree}
               </h3>
               <p className="text-sm text-[var(--gray-500)] mt-0.5">
-                14 днів · без картки · без зобов&apos;язань
+                {t.subtitle}
               </p>
             </div>
             <button
               onClick={close}
               className="w-9 h-9 rounded-xl bg-[var(--gray-50)] hover:bg-[var(--gray-100)] flex items-center justify-center transition-colors cursor-pointer"
-              aria-label="Закрити"
+              aria-label={t.close}
             >
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--gray-500)" strokeWidth="2" strokeLinecap="round">
                 <path d="M18 6L6 18M6 6l12 12" />
@@ -102,16 +106,16 @@ export default function LeadForm() {
                   </svg>
                 </div>
                 <h4 className="text-xl font-bold text-[var(--foreground)] mb-2">
-                  Дякуємо!
+                  {t.thanks}
                 </h4>
                 <p className="text-sm text-[var(--gray-500)] max-w-xs">
-                  Ми отримали вашу заявку і зв&apos;яжемось з вами найближчим часом.
+                  {t.received}
                 </p>
                 <button
                   onClick={close}
                   className="mt-6 px-6 py-2.5 rounded-xl bg-[var(--gray-50)] hover:bg-[var(--gray-100)] text-sm font-medium text-[var(--foreground)] transition-colors cursor-pointer"
                 >
-                  Закрити
+                  {t.close}
                 </button>
               </div>
             ) : (
@@ -119,7 +123,7 @@ export default function LeadForm() {
                 {/* Phone */}
                 <div>
                   <label htmlFor="lead-phone" className="block text-sm font-medium text-[var(--foreground)] mb-1.5">
-                    Телефон <span className="text-red-400">*</span>
+                    {t.phone} <span className="text-red-400">*</span>
                   </label>
                   <input
                     id="lead-phone"
@@ -151,7 +155,7 @@ export default function LeadForm() {
                 {/* Company */}
                 <div>
                   <label htmlFor="lead-company" className="block text-sm font-medium text-[var(--foreground)] mb-1.5">
-                    Назва компанії <span className="text-[var(--gray-400)] font-normal">(необов&apos;язково)</span>
+                    {t.companyName} <span className="text-[var(--gray-400)] font-normal">{t.optional}</span>
                   </label>
                   <input
                     id="lead-company"
@@ -165,7 +169,7 @@ export default function LeadForm() {
 
                 {status === "error" && (
                   <p className="text-sm text-red-500">
-                    Щось пішло не так. Спробуйте ще раз або напишіть нам у Telegram.
+                    {t.error}
                   </p>
                 )}
 
@@ -181,17 +185,17 @@ export default function LeadForm() {
                         <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3" className="opacity-25" />
                         <path d="M4 12a8 8 0 018-8" stroke="currentColor" strokeWidth="3" strokeLinecap="round" className="opacity-75" />
                       </svg>
-                      Відправляємо…
+                      {t.sending}
                     </>
                   ) : (
-                    "Відправити заявку"
+                    t.submit
                   )}
                 </button>
 
                 <p className="text-xs text-[var(--gray-400)] text-center leading-relaxed">
-                  Натискаючи кнопку, ви погоджуєтесь з обробкою персональних даних відповідно до{" "}
-                  <Link href="/privacy" onClick={close} className="underline underline-offset-2 hover:text-[var(--gray-600)]">
-                    Політики конфіденційності
+                  {t.consent}{" "}
+                  <Link href={localePath(lang, "/privacy")} onClick={close} className="underline underline-offset-2 hover:text-[var(--gray-600)]">
+                    {t.consentLink}
                   </Link>
                 </p>
               </form>

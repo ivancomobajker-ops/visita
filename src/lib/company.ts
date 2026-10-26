@@ -8,7 +8,7 @@ export const COMPANY = {
   brand: "Visita",
   shortName: "ТОВ «ГЛОБУС ЕКСПРЕСС»",
   fullName: "Товариство з обмеженою відповідальністю «ГЛОБУС ЕКСПРЕСС»",
-  latinName: "HLOBUS EXPRESS TOV",
+  latinName: "HLOBUS EKSPRESS TOV",
   edrpou: "43458868",
   email: "office@visita.com.ua",
   address: {

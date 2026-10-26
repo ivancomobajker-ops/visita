@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useEffect, useRef, useState } from "react";
 import { useLeadForm } from "./LeadFormContext";
+import { useI18n } from "@/i18n/I18nProvider";
 
 function useInView(threshold = 0.15) {
   const ref = useRef<HTMLDivElement>(null);
@@ -25,6 +26,8 @@ function useInView(threshold = 0.15) {
 export default function CtaBanner() {
   const { ref, inView } = useInView();
   const { open: openLeadForm } = useLeadForm();
+  const { t: dict } = useI18n();
+  const t = dict.cta;
 
   return (
     <section className="relative py-20 sm:py-28 overflow-hidden">
@@ -47,14 +50,13 @@ export default function CtaBanner() {
               {/* Left: text */}
               <div>
                 <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold tracking-tight text-white leading-tight">
-                  Запустіть свій
+                  {t.titleStart}
                   <br />
-                  <span className="text-[var(--accent)]">онлайн-запис</span> за 5 хвилин
+                  <span className="text-[var(--accent)]">{t.titleHighlight}</span> {t.titleEnd}
                 </h2>
 
                 <p className="mt-5 text-lg text-white/60 max-w-md leading-relaxed">
-                  Створіть персональну сторінку запису, поділіться посиланням —
-                  і клієнти бронюватимуть самі. Без дзвінків, без месенджерів.
+                  {t.subtitle}
                 </p>
 
                 <div className="mt-8 flex flex-col sm:flex-row gap-3">
@@ -62,7 +64,7 @@ export default function CtaBanner() {
                     onClick={openLeadForm}
                     className="inline-flex items-center justify-center gap-2.5 h-13 px-7 text-base font-semibold text-[var(--foreground)] bg-[var(--accent)] hover:bg-[var(--accent-dark)] rounded-full transition-all duration-200 shadow-lg shadow-[var(--accent)]/20 cursor-pointer"
                   >
-                    Почати безкоштовно
+                    {dict.common.startFree}
                     <svg
                       width="18"
                       height="18"
@@ -81,7 +83,7 @@ export default function CtaBanner() {
                 </div>
 
                 <p className="mt-6 text-sm text-white/40">
-                  14 днів безкоштовно · без картки
+                  {t.trust}
                 </p>
               </div>
 
@@ -91,7 +93,7 @@ export default function CtaBanner() {
                   <div className="relative rounded-2xl overflow-hidden aspect-[3/4]">
                     <Image
                       src="https://images.unsplash.com/photo-1595476108010-b4d1f102b1b1?w=400&q=80"
-                      alt="Майстер манікюру за роботою"
+                      alt={t.photo1Alt}
                       fill
                       className="object-cover"
                       sizes="(max-width: 1024px) 45vw, 20vw"
@@ -102,7 +104,7 @@ export default function CtaBanner() {
                     <div className="relative rounded-2xl overflow-hidden aspect-square">
                       <Image
                         src="https://images.unsplash.com/photo-1559599101-f09722fb4948?w=400&q=80"
-                        alt="Барбершоп"
+                        alt={t.photo2Alt}
                         fill
                         className="object-cover"
                         sizes="(max-width: 1024px) 45vw, 20vw"
@@ -112,9 +114,9 @@ export default function CtaBanner() {
                     {/* Mini stat card */}
                     <div className="flex-1 rounded-2xl border border-white/[0.08] bg-white/[0.04] backdrop-blur-sm p-4 flex flex-col justify-center">
                       <p className="text-3xl font-extrabold text-white leading-none">500+</p>
-                      <p className="text-xs text-white/50 mt-1.5">майстрів довіряють</p>
+                      <p className="text-xs text-white/50 mt-1.5">{t.mastersTrust}</p>
                       <div className="flex -space-x-1.5 mt-3">
-                        {["О", "М", "І", "К", "А"].map((l, i) => (
+                        {t.initials.map((l, i) => (
                           <div key={i} className="w-6 h-6 rounded-full bg-[var(--accent)]/20 border-2 border-[var(--foreground)] flex items-center justify-center text-[8px] font-bold text-[var(--accent)]">
                             {l}
                           </div>

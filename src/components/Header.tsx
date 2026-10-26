@@ -2,11 +2,18 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { useState, useEffect } from "react";
 import { useLeadForm } from "./LeadFormContext";
+import { useI18n } from "@/i18n/I18nProvider";
+import { localePath, switchLocalePath } from "@/i18n/config";
 
 export default function Header() {
   const { open: openLeadForm } = useLeadForm();
+  const { lang, t } = useI18n();
+  const pathname = usePathname();
+  const home = localePath(lang, "/");
+  const otherLang = lang === "uk" ? "en" : "uk";
   const [scrolled, setScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("");
@@ -38,11 +45,24 @@ export default function Header() {
   }, []);
 
   const navLinks = [
-    { label: "Як це працює", href: "/#how-it-works", id: "how-it-works" },
-    { label: "Можливості", href: "/#features", id: "features" },
-    { label: "Тарифи", href: "/#pricing", id: "pricing" },
-    { label: "FAQ", href: "/#faq", id: "faq" },
+    { label: t.nav.howItWorks, href: `${home}#how-it-works`, id: "how-it-works" },
+    { label: t.nav.features, href: `${home}#features`, id: "features" },
+    { label: t.nav.pricing, href: `${home}#pricing`, id: "pricing" },
+    { label: t.nav.faq, href: `${home}#faq`, id: "faq" },
   ];
+
+  const langSwitch = (
+    <Link
+      href={switchLocalePath(pathname, otherLang)}
+      hrefLang={otherLang}
+      lang={otherLang}
+      aria-label={t.nav.switchLanguage}
+      title={t.nav.switchLanguage}
+      className="inline-flex items-center justify-center h-9 min-w-10 px-3 rounded-full text-sm font-semibold text-[var(--gray-600)] border border-[var(--gray-200)] hover:text-[var(--foreground)] hover:border-[var(--gray-300)] transition-colors"
+    >
+      {t.nav.switchLabel}
+    </Link>
+  );
 
   return (
     <header
@@ -55,9 +75,9 @@ export default function Header() {
       <div className="mx-auto max-w-7xl px-5 sm:px-8">
         <div className="flex h-16 sm:h-[68px] items-center justify-between">
           {/* Logo */}
-          <Link href="/" className="flex items-center gap-3 group shrink-0">
+          <Link href={home} className="flex items-center gap-3 group shrink-0">
             <div className="relative w-10 h-10 rounded-2xl overflow-hidden bg-[var(--accent)] flex items-center justify-center transition-all duration-300 group-hover:scale-105 group-hover:shadow-md group-hover:shadow-[var(--accent)]/30">
-              <Image src="/appIcon.png" alt="Visita logo" fill sizes="40px" className="object-cover" />
+              <Image src="/appIcon.png" alt={t.common.logoAlt} fill sizes="40px" className="object-cover" />
             </div>
             <span className="text-lg font-bold tracking-tight text-[var(--foreground)]">
               Visita
@@ -84,23 +104,26 @@ export default function Header() {
           </nav>
 
           {/* Desktop CTA */}
-          <div className="hidden md:flex items-center shrink-0">
+          <div className="hidden md:flex items-center gap-3 shrink-0">
+            {langSwitch}
             <button
               onClick={openLeadForm}
               className="btn-primary inline-flex items-center gap-2 px-5 py-2 text-sm font-semibold text-[var(--foreground)] rounded-full cursor-pointer"
             >
-              Спробувати безкоштовно
+              {t.common.tryFree}
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none">
                 <path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
               </svg>
             </button>
           </div>
 
-          {/* Mobile menu button */}
+          {/* Mobile: language switch + menu button */}
+          <div className="md:hidden flex items-center gap-1">
+          {langSwitch}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="md:hidden relative w-10 h-10 flex items-center justify-center rounded-xl transition-colors hover:bg-black/[0.04]"
-            aria-label="Меню"
+            aria-label={t.nav.menu}
           >
             <div className="flex flex-col gap-[5px]">
               <span
@@ -120,6 +143,7 @@ export default function Header() {
               />
             </div>
           </button>
+          </div>
         </div>
       </div>
 
@@ -151,7 +175,7 @@ export default function Header() {
               onClick={() => { setMobileMenuOpen(false); openLeadForm(); }}
               className="btn-primary block w-full text-center px-5 py-2.5 text-[15px] font-semibold text-[var(--foreground)] rounded-full cursor-pointer"
             >
-              Спробувати безкоштовно
+              {t.common.tryFree}
             </button>
           </div>
         </div>

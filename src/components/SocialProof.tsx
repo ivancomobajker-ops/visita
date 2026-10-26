@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { useI18n } from "@/i18n/I18nProvider";
 
 function useInView(threshold = 0.2) {
   const ref = useRef<HTMLDivElement>(null);
@@ -39,13 +40,9 @@ function AnimatedNumber({ target, suffix = "" }: { target: number; suffix?: stri
   return <span ref={ref}>{count}{suffix}</span>;
 }
 
-const cities = [
-  "Київ", "Львів", "Одеса", "Харків", "Дніпро", "Вінниця", "Запоріжжя",
-  "Полтава", "Чернівці", "Ужгород", "Рівне", "Тернопіль", "Івано-Франківськ",
-];
-
 export default function SocialProof() {
   const { ref, inView } = useInView(0.15);
+  const t = useI18n().t.socialProof;
 
   return (
     <section className="relative py-14 sm:py-20 overflow-hidden">
@@ -64,7 +61,7 @@ export default function SocialProof() {
                 <AnimatedNumber target={500} suffix="+" />
               </p>
               <p className="text-sm font-medium text-[var(--foreground)]/70">
-                Майстрів та салонів
+                {t.masters}
               </p>
             </div>
           </div>
@@ -81,7 +78,7 @@ export default function SocialProof() {
                 <AnimatedNumber target={50} suffix="K+" />
               </p>
               <p className="text-sm font-medium text-[var(--gray-500)]">
-                Записів щомісяця
+                {t.bookings}
               </p>
             </div>
           </div>
@@ -98,7 +95,7 @@ export default function SocialProof() {
                 <AnimatedNumber target={89} suffix="%" />
               </p>
               <p className="text-sm font-medium text-[var(--gray-500)]">
-                Менше неявок
+                {t.noShows}
               </p>
             </div>
           </div>
@@ -120,7 +117,7 @@ export default function SocialProof() {
                 </svg>
               </div>
               <p className="text-sm font-medium text-white/60">
-                Середня оцінка
+                {t.rating}
               </p>
             </div>
           </div>
@@ -133,9 +130,9 @@ export default function SocialProof() {
           }`}
         >
           <span className="text-xs uppercase tracking-[0.15em] text-[var(--gray-400)] font-medium mr-2">
-            Довіряють у
+            {t.trustedIn}
           </span>
-          {cities.map((city, i) => (
+          {t.cities.map((city, i) => (
             <span
               key={i}
               className="px-3 py-1 rounded-full bg-[var(--gray-50)] border border-[var(--gray-100)] text-xs font-medium text-[var(--gray-500)]"
