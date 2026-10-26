@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import uk, { type Dictionary } from "./dictionaries/uk";
 import en from "./dictionaries/en";
-import { type Locale, localePath } from "./config";
+import { type Locale, defaultLocale, localePath } from "./config";
 
 export * from "./config";
 export type { Dictionary };
@@ -29,9 +29,9 @@ export function pageMetadata(
     alternates: {
       canonical: localePath(lang, path),
       languages: {
-        uk: localePath("uk", path),
         en: localePath("en", path),
-        "x-default": localePath("uk", path),
+        uk: localePath("uk", path),
+        "x-default": localePath(defaultLocale, path),
       },
     },
     openGraph: {

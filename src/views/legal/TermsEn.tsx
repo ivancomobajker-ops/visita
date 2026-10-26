@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { COMPANY, SITE_URL } from "@/lib/company";
+import { localePath } from "@/i18n/config";
 
 // English translation of TermsUk. Keep the two in sync.
 export default function TermsEn() {
@@ -12,7 +13,7 @@ export default function TermsEn() {
           <a href={`${SITE_URL}/`}>{SITE_URL.replace("https://", "")}</a> (the &quot;Website&quot;).
           The Website belongs to {COMPANY.fullName} ({COMPANY.latinName}, EDRPOU code{" "}
           {COMPANY.edrpou}), which is the owner and operator of the {COMPANY.brand} platform. See
-          the <Link href="/en/company">About the company</Link> page for details.
+          the <Link href={localePath("en", "/company")}>About the company</Link> page for details.
         </p>
         <p>By using the Website, you agree to these terms.</p>
       </section>
@@ -32,7 +33,7 @@ export default function TermsEn() {
         <p>
           By submitting a request, you confirm that the data you provide is yours or that you have
           the right to provide it. How we process data is described in the{" "}
-          <Link href="/en/privacy">Privacy Policy</Link>.
+          <Link href={localePath("en", "/privacy")}>Privacy Policy</Link>.
         </p>
       </section>
 

@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { COMPANY, SITE_URL } from "@/lib/company";
+import { localePath } from "@/i18n/config";
 
 // Ukrainian original — the authoritative version.
 export default function TermsUk() {
@@ -12,7 +13,7 @@ export default function TermsUk() {
           <a href={`${SITE_URL}/`}>{SITE_URL.replace("https://", "")}</a> (далі — «Сайт»).
           Сайт належить {COMPANY.fullName} (код ЄДРПОУ {COMPANY.edrpou}), яке є власником та
           оператором платформи {COMPANY.brand}. Детальніше — на сторінці{" "}
-          <Link href="/company">«Про компанію»</Link>.
+          <Link href={localePath("uk", "/company")}>«Про компанію»</Link>.
         </p>
         <p>Користуючись Сайтом, ви погоджуєтеся з цими умовами.</p>
       </section>
@@ -32,7 +33,7 @@ export default function TermsUk() {
         <p>
           Надсилаючи заявку, ви підтверджуєте, що надані дані є вашими або що ви маєте право їх
           надати. Порядок обробки даних описано в{" "}
-          <Link href="/privacy">Політиці конфіденційності</Link>.
+          <Link href={localePath("uk", "/privacy")}>Політиці конфіденційності</Link>.
         </p>
       </section>
 

@@ -1,8 +1,8 @@
-export const locales = ["uk", "en"] as const;
+export const locales = ["en", "uk"] as const;
 export type Locale = (typeof locales)[number];
-export const defaultLocale: Locale = "uk";
+export const defaultLocale: Locale = "en";
 
-// Ukrainian lives at the site root ("/company"), English under "/en" ("/en/company").
+// English lives at the site root ("/company"), Ukrainian under "/uk" ("/uk/company").
 export function localePath(lang: Locale, path: string = "/"): string {
   if (lang === defaultLocale) return path;
   return path === "/" ? `/${lang}` : `/${lang}${path}`;
@@ -10,6 +10,7 @@ export function localePath(lang: Locale, path: string = "/"): string {
 
 // Turns a current pathname into the same page in another language.
 export function switchLocalePath(pathname: string, to: Locale): string {
-  const bare = pathname.replace(/^\/en(?=\/|$)/, "") || "/";
+  const prefixes = locales.filter((l) => l !== defaultLocale).join("|");
+  const bare = pathname.replace(new RegExp(`^/(${prefixes})(?=/|$)`), "") || "/";
   return localePath(to, bare);
 }

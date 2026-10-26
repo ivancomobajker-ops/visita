@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { COMPANY, SITE_URL } from "@/lib/company";
+import { localePath } from "@/i18n/config";
 
 // English translation of PrivacyUk. Keep the two in sync.
 export default function PrivacyEn() {
@@ -14,7 +15,7 @@ export default function PrivacyEn() {
           <a href={`${SITE_URL}/`}>{SITE_URL.replace("https://", "")}</a> (the &quot;Website&quot;)
           is {COMPANY.fullName} ({COMPANY.latinName}, EDRPOU code {COMPANY.edrpou}), registered
           address: {COMPANY.address.full}. The company is the owner and operator of the{" "}
-          {COMPANY.brand} platform. See the <Link href="/en/company">About the company</Link> page
+          {COMPANY.brand} platform. See the <Link href={localePath("en", "/company")}>About the company</Link> page
           for details.
         </p>
         <p>For any questions about your data, write to {mail}.</p>

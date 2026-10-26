@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { COMPANY, SITE_URL } from "@/lib/company";
+import { localePath } from "@/i18n/config";
 
 // Ukrainian original — the authoritative version.
 export default function PrivacyUk() {
@@ -14,7 +15,7 @@ export default function PrivacyUk() {
           <a href={`${SITE_URL}/`}>{SITE_URL.replace("https://", "")}</a> (далі — «Сайт»),
           є {COMPANY.fullName} (код ЄДРПОУ {COMPANY.edrpou}), адреса: {COMPANY.address.full}.
           Компанія є власником та оператором платформи {COMPANY.brand}. Детальніше — на сторінці{" "}
-          <Link href="/company">«Про компанію»</Link>.
+          <Link href={localePath("uk", "/company")}>«Про компанію»</Link>.
         </p>
         <p>З питань щодо ваших даних пишіть на {mail}.</p>
       </section>
