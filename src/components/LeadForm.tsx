@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useState, useEffect, type FormEvent } from "react";
 import { useLeadForm } from "./LeadFormContext";
 
@@ -188,7 +189,10 @@ export default function LeadForm() {
                 </button>
 
                 <p className="text-xs text-[var(--gray-400)] text-center leading-relaxed">
-                  Натискаючи кнопку, ви погоджуєтесь з обробкою персональних даних
+                  Натискаючи кнопку, ви погоджуєтесь з обробкою персональних даних відповідно до{" "}
+                  <Link href="/privacy" onClick={close} className="underline underline-offset-2 hover:text-[var(--gray-600)]">
+                    Політики конфіденційності
+                  </Link>
                 </p>
               </form>
             )}

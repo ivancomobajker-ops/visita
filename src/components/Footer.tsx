@@ -104,10 +104,16 @@ export default function Footer() {
                 {COMPANY.email}
               </a>
             </p>
-            <p>
-              <Link href="/company" className="text-white/70 underline underline-offset-2 decoration-white/20 hover:text-[var(--accent)] hover:decoration-[var(--accent)] transition-colors">
-                Інформація про компанію
-              </Link>
+            <p className="flex flex-wrap gap-x-5 gap-y-1">
+              {[
+                { label: "Інформація про компанію", href: "/company" },
+                { label: "Політика конфіденційності", href: "/privacy" },
+                { label: "Умови використання", href: "/terms" },
+              ].map((link) => (
+                <Link key={link.href} href={link.href} className="text-white/70 underline underline-offset-2 decoration-white/20 hover:text-[var(--accent)] hover:decoration-[var(--accent)] transition-colors">
+                  {link.label}
+                </Link>
+              ))}
             </p>
           </div>
         </div>
